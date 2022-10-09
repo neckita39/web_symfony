@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Admin;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -26,7 +25,7 @@ class UserFixture extends Fixture
         $manager->flush();
     }
 
-	public function generateAdmin()
+	public function generateAdmin(): User
 	{
 		return new User(
 			$this->faker->userName(),
@@ -35,7 +34,7 @@ class UserFixture extends Fixture
 		);
 	}
 
-	public function generateUser()
+	public function generateUser(): User
 	{
 		return new User(
 			$this->faker->userName(),

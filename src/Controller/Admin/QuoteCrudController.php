@@ -4,6 +4,9 @@ namespace App\Controller\Admin;
 
 use App\Entity\Quote;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class QuoteCrudController extends AbstractCrudController
 {
@@ -12,14 +15,16 @@ class QuoteCrudController extends AbstractCrudController
         return Quote::class;
     }
 
-    /*
+
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
+            // IdField::new('id'),
+            TextField::new('quote'),
+            TextField::new('historian'),
+            TextField::new('year'),
+            // TextEditorField::new('description'),
         ];
     }
-    */
+
 }

@@ -2,7 +2,6 @@
 
 namespace App\Security;
 
-use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,20 +29,17 @@ class AppCustomAuthAuthenticator extends AbstractLoginFormAuthenticator
     {
         $username = $request->request->get('username', '');
 		$password = $request->request->get('password', '');
-		// echo "<pre>";
+		$token = $request->request->get('_csrf_token');
+
         $request->getSession()->set(Security::LAST_USERNAME, $username);
 
-		$passport = new Passport(
+		return new Passport(
 			new UserBadge($username),
 			new PasswordCredentials($password),
 			[
-				new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')),
+				new CsrfTokenBadge('authenticate', $token),
 			]
 		);
-		// var_dump($passport);
-		// echo "</pre>";
-
-		return $passport;
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
@@ -52,9 +48,7 @@ class AppCustomAuthAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        // For example:
         return new RedirectResponse($this->urlGenerator->generate('admin'));
-        // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 
     protected function getLoginUrl(Request $request): string

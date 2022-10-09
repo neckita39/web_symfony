@@ -23,7 +23,11 @@ class Quote
     #[ORM\Column(length: 5)]
     private ?string $year = null;
 
-	public function __construct(?string $quote, ?string $historian, ?string $year)
+	public function __construct(
+		?string $quote = null,
+		?string $historian = null,
+		?string $year = null
+	)
 	{
 		$this->quote = $quote;
 		$this->historian = $historian;

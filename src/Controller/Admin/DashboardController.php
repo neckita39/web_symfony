@@ -9,7 +9,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -22,7 +21,7 @@ class DashboardController extends AbstractDashboardController
 	public function index(): Response
 	{
 		$this->routeBuilder = $this->container->get(AdminUrlGenerator::class);
-		$this->validateUser();
+		$this->makeUrl();
 		return $this->redirect($this->url);
 	}
 
@@ -36,17 +35,14 @@ class DashboardController extends AbstractDashboardController
 		yield MenuItem::linkToCrud('Quotes', 'fas fa-comments', Quote::class);
 	}
 
-	public function validateUser(): void
+	public function makeUrl(): void
 	{
-		$user = $this->getUser();
-
-		if (!$user)
+		if (!$this->getUser())
 		{
 			return;
 		}
 
-		$roles = $user->getRoles();
-		if (!in_array(static::ROLE_ADMIN, $roles, true))
+		if (!in_array(static::ROLE_ADMIN, $this->getUser()->getRoles(), true))
 		{
 			return;
 		}
